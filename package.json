@@ -1,0 +1,36 @@
+{
+  "name": "@nseptier/tetris",
+  "version": "0.1.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server --mode=development",
+    "test": "jest"
+  },
+  "author": "Nicolas SEPTIER <nicolas.septier@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-decorators": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "autobind-decorator": "^2.3.1",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^1.0.0",
+    "css-loader": "^1.0.1",
+    "eslint": "^5.9.0",
+    "eslint-loader": "^2.1.1",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.6.0",
+    "mini-css-extract-plugin": "^0.4.5",
+    "node-sass": "^4.10.0",
+    "sass-loader": "^7.1.0",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "dependencies": {}
+}
