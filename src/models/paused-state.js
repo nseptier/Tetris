@@ -1,17 +1,17 @@
 import GravityState from 'models/gravity-state';
-import KEY from 'enums/key';
-import STATE from 'enums/state';
+import key from 'enums/key';
+import State from 'enums/state';
 
 export default class PausedState {
   constructor({ game }) {
     this.game = game;
-    this.name = STATE.PAUSED;
+    this.name = State.PAUSED;
   }
 
   processInput(input) {
     switch (input) {
-    case KEY.ESCAPE:
-    case KEY.F1:
+    case key.ESCAPE:
+    case key.F1:
       return new GravityState({
         ...this,
         lastUpdatedAt: this.timestamp,

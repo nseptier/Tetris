@@ -1,9 +1,9 @@
 import DIRECTION from 'enums/direction';
-import KEY from 'enums/key';
+import key from 'enums/key';
 import NewGameState from 'models/new-game-state';
 import PausedState from 'models/paused-state';
 import RowsClearingState from 'models/rows-clearing-state';
-import STATE from 'enums/state';
+import State from 'enums/state';
 
 const FRAME_LENGTH_AT_60_FPS = 1000 / 60;
 const LOCK_DELAY = 500;
@@ -14,7 +14,7 @@ export default class GravityState {
     this.lastUpdatedAt = lastUpdatedAt || 0;
     this.lockExpiry = lockExpiry || 0;
     this.movesLeft = movesLeft || 0;
-    this.name = STATE.GRAVITY;
+    this.name = State.GRAVITY;
     this.startedAt = startedAt || 0;
   }
 
@@ -50,32 +50,32 @@ export default class GravityState {
 
   processInput(input) {
     switch (input) {
-    case KEY.CTRL_LEFT:
-    case KEY.CTRL_RIGHT:
-    case KEY.Z:
+    case key.CTRL_LEFT:
+    case key.CTRL_RIGHT:
+    case key.Z:
       return this.rotateTetrimino(DIRECTION.COUNTERCLOCKWISE);
 
-    case KEY.DOWN_ARROW:
-    case KEY.S:
+    case key.DOWN_ARROW:
+    case key.S:
       return this.moveTetrimino(DIRECTION.DOWN);
 
-    case KEY.ESCAPE:
-    case KEY.F1:
+    case key.ESCAPE:
+    case key.F1:
       return new PausedState(this);
 
-    case KEY.LEFT_ARROW:
-    case KEY.A:
+    case key.LEFT_ARROW:
+    case key.A:
       return this.moveTetrimino(DIRECTION.LEFT);
 
-    case KEY.RIGHT_ARROW:
-    case KEY.D:
+    case key.RIGHT_ARROW:
+    case key.D:
       return this.moveTetrimino(DIRECTION.RIGHT);
 
-    case KEY.SPACE:
+    case key.SPACE:
       return this.hardDropTetrimino();
 
-    case KEY.UP_ARROW:
-    case KEY.X:
+    case key.UP_ARROW:
+    case key.X:
       return this.rotateTetrimino(DIRECTION.CLOCKWISE);
 
     default: return this;

@@ -2,7 +2,7 @@ import Core from 'models/core';
 import Game from 'models/game';
 import InputsHandler from 'models/inputs-handler';
 import NewGameState from 'models/new-game-state';
-import STATE from 'enums/state';
+import State from 'enums/state';
 import './styles.scss';
 
 const UNIT = 20;
@@ -99,11 +99,11 @@ const renderer = {
       }
     }
 
-    if (state === STATE.NEW_GAME) {
+    if (state === State.NEW_GAME) {
       displayMessage('Press [Enter]');
     }
 
-    if (state === STATE.PAUSED) {
+    if (state === State.PAUSED) {
       displayMessage('Paused');
     }
   },
