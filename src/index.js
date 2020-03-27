@@ -1,7 +1,7 @@
 import Core from 'models/core';
 import Game from 'models/game';
 import InputsHandler from 'models/inputs-handler';
-import NewGameState from 'models/new-game-state';
+import NewGameState from 'models/states/new-game';
 import State from 'enums/state';
 import './styles.scss';
 

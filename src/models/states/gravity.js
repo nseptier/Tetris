@@ -1,8 +1,8 @@
 import DIRECTION from 'enums/direction';
 import key from 'enums/key';
-import NewGameState from 'models/new-game-state';
-import PausedState from 'models/paused-state';
-import RowsClearingState from 'models/rows-clearing-state';
+import NewGameState from 'models/states/new-game';
+import PausedState from 'models/states/paused';
+import RowsClearingState from 'models/states/rows-clearing';
 import State from 'enums/state';
 
 const FRAME_LENGTH_AT_60_FPS = 1000 / 60;

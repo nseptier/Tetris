@@ -1,4 +1,4 @@
-import GravityState from 'models/gravity-state';
+import GravityState from 'models/states/gravity';
 import key from 'enums/key';
 import State from 'enums/state';
 

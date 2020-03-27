@@ -1,4 +1,4 @@
-import GravityState from 'models/gravity-state';
+import GravityState from 'models/states/gravity';
 
 const CLEAR_DURATION = 500;
 
