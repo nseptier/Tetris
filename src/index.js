@@ -7,7 +7,7 @@ import './styles.scss';
 
 const UNIT = 20;
 const WIDTH = 10;
-const HEIGHT = 22;
+const HEIGHT = 20;
 
 const gameCanvas = document.createElement('canvas');
 gameCanvas.height = UNIT * HEIGHT;
@@ -40,7 +40,7 @@ const renderer = {
 
     // rendering locked blocks
     context.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-    for (let y = 2; y < lockedBlocks.length; y++) {
+    for (let y = 0; y < lockedBlocks.length; y++) {
       for (let x = 0; x < lockedBlocks[y].length; x++) {
         if (fullRowsIndexes.includes(y)) {
           context.fillStyle = 'rgba(255, 255, 255, .33)';
@@ -82,7 +82,7 @@ const renderer = {
 
       for (let y = 0; y < tetrimino.blocks.length; y++) {
         for (let x = 0; x < tetrimino.blocks[y].length; x++) {
-          if ((tetrimino.y + y) < 2 || !tetrimino.blocks[y][x]) continue;
+          if (!tetrimino.blocks[y][x]) continue;
           context.clearRect(
             (tetrimino.x + x) * UNIT,
             (tetrimino.y + y) * UNIT,
