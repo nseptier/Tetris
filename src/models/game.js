@@ -25,7 +25,7 @@ export default class Game {
     queue = [],
     tetrimino,
     width = 10,
-  }) {
+  } = {}) {
     this.fullRowsIndexes = fullRowsIndexes;
     this.gravity = 1 / 40; // cells per frame at 60 fps (cells per second)
     this.height = height;
