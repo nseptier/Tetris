@@ -1,6 +1,6 @@
 body {
   align-items: center;
-  background: #282828;
+  background: #111;
   display: flex;
   justify-content: center;
   margin: 0;
@@ -8,5 +8,18 @@ body {
 }
 
 canvas {
+  --height: 50vh;
+
   border: 0;
+  height: var(--height);
+  width: calc(var(--height) / 2);
+}
+
+@media (max-width: 480px) {
+  canvas {
+    --height: 90vh;
+
+    height: var(--height);
+    width: calc(var(--height) / 2);
+  }
 }

@@ -36,7 +36,12 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
   },
   plugins: [
-    new HtmlWebpackPlugin({ title: 'Tetris' }),
+    new HtmlWebpackPlugin({
+      meta: {
+        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
+      },
+      title: 'Tetris',
+    }),
     new MiniCssExtractPlugin({ filename: 'styles.css' }),
   ],
   resolve: {

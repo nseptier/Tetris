@@ -1,6 +1,6 @@
 import State from 'enums/state';
 
-const UNIT = 20;
+const UNIT = 50;
 
 export default (width, height) => {
   const gameCanvas = document.createElement('canvas');
@@ -8,13 +8,13 @@ export default (width, height) => {
 
   gameCanvas.height = UNIT * height;
   gameCanvas.width = UNIT * width;
-  context.font = '16px "source code pro"';
+  context.font = `${UNIT * 0.8}px "source code pro"`;
   context.textAlign = 'center';
   context.textBaseline = 'middle';
   document.body.appendChild(gameCanvas);
 
   const displayMessage = message => {
-    context.fillStyle = 'rgba(40, 40, 40, .33)';
+    context.fillStyle = 'rgba(17, 17, 17, .33)';
     context.fillRect(0, 0, width * UNIT, height * UNIT);
     context.fillStyle = '#fff';
     context.fillText(
@@ -29,7 +29,7 @@ export default (width, height) => {
     for (let y = 0; y < lockedBlocks.length; y++) {
       for (let x = 0; x < lockedBlocks[y].length; x++) {
         if (fullRowsIndexes.includes(y)) {
-          context.fillStyle = 'rgba(255, 255, 255, .33)';
+          context.fillStyle = '#C2185B';
         } else {
           context.fillStyle = lockedBlocks[y][x]
             ? '#fff'
@@ -57,7 +57,7 @@ export default (width, height) => {
           UNIT,
           UNIT,
         );
-        context.fillStyle = 'rgba(220, 20, 60, .33)';
+        context.fillStyle = 'rgba(255, 255, 255, .25)';
         context.fillText(
           ghost.blocks[y][x],
           ghost.x * UNIT + x * UNIT + UNIT / 2,
@@ -78,7 +78,7 @@ export default (width, height) => {
           UNIT,
           UNIT,
         );
-        context.fillStyle = 'crimson';
+        context.fillStyle = 'white';
         context.fillText(
           tetrimino.blocks[y][x],
           (tetrimino.x + x) * UNIT + UNIT / 2,
