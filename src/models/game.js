@@ -20,11 +20,11 @@ const JLSTZ_WALL_KICKS_TABLE = [
 export default class Game {
   constructor({
     fullRowsIndexes = [],
-    height,
+    height = 20,
     lockedBlocks,
     queue = [],
     tetrimino,
-    width,
+    width = 10,
   }) {
     this.fullRowsIndexes = fullRowsIndexes;
     this.gravity = 1 / 40; // cells per frame at 60 fps (cells per second)
