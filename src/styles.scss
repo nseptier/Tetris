@@ -8,17 +8,5 @@ body {
 }
 
 canvas {
-  border: 1px solid transparent;
-  left: 50%;
-  padding: 12px;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%,-50%);
-}
-
-pre {
-  color: dimgray;
-  font: 16px "source code pro";
-  margin: 0;
-  position: relative;
+  border: 0;
 }
