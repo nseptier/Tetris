@@ -49,6 +49,8 @@ export default class GravityState {
   }
 
   processInput(input) {
+    if (!this.game.tetrimino) return this;
+
     switch (input) {
     case key.CTRL_LEFT:
     case key.CTRL_RIGHT:
