@@ -33,8 +33,8 @@ export default class Game {
   } = {}) {
     this.fullRowsIndexes = fullRowsIndexes;
     this.gravity = 1 / 40; // cells per frame at 60 fps (cells per second)
-    this.height = height;
-    this.width = width;
+    this.height = lockedBlocks ? lockedBlocks.length : height;
+    this.width = lockedBlocks ? lockedBlocks[0].length : width;
     this.lockedBlocks = lockedBlocks
       || [...new Array(height)].map(() => [...new Array(width)].fill(0));
     this.queue = queue ?? this.initQueue(queueSize);
