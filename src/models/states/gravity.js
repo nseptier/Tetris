@@ -101,6 +101,9 @@ export default class GravityState {
     if (!this.startedAt) this.startedAt = timestamp;
 
     if (!game.tetrimino) game = game.shiftQueue();
+    if (!game.isValidChunk(game.tetrimino)) {
+      return new NewGameState({ game: game.reset() });
+    }
 
     game = this.applyGravity(game);
     if (game.isValidChunk(game.tetrimino.move(DIRECTION.DOWN))) {
@@ -117,8 +120,6 @@ export default class GravityState {
         ...this,
         game: game.lockTetrimino(),
       });
-    } else if (game.tetrimino.y === 0) {
-      return new NewGameState({ game: game.reset() });
     }
     return this;
   }

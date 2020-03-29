@@ -17,38 +17,33 @@ const JLSTZ_WALL_KICKS_TABLE = [
   [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
 ];
 
+const createRandomTetrimino = () => new Tetrimino({
+  shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
+});
+
 export default class Game {
   constructor({
     fullRowsIndexes = [],
     height = 20,
     lockedBlocks,
-    queue = [],
+    queue,
+    queueSize = 3,
     tetrimino,
     width = 10,
   } = {}) {
     this.fullRowsIndexes = fullRowsIndexes;
     this.gravity = 1 / 40; // cells per frame at 60 fps (cells per second)
     this.height = height;
+    this.width = width;
     this.lockedBlocks = lockedBlocks
       || [...new Array(height)].map(() => [...new Array(width)].fill(0));
-    this.queue = queue;
+    this.queue = queue ?? this.initQueue(queueSize);
     this.tetrimino = tetrimino;
-    this.width = width;
   }
 
   get ghost() {
     if (!this.tetrimino) return null;
     return this.hardDropChunk(this.tetrimino);
-  }
-
-  createRandomTetrimino() {
-    const shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
-    const tetrimino = new Tetrimino({ shape });
-
-    return tetrimino.moveTo([
-      Math.floor((this.width - tetrimino.blocks.length) / 2),
-      0,
-    ]);
   }
 
   dropLockedBlocks() {
@@ -131,6 +126,19 @@ export default class Game {
 
   hardDropTetrimino() {
     return new Game({ ...this, tetrimino: this.ghost });
+  }
+
+  initQueue(size) {
+    return [...Array(size)].map(() => this.initRandomTetrimino());
+  }
+
+  initRandomTetrimino() {
+    const tetrimino = createRandomTetrimino();
+
+    return tetrimino.moveTo([
+      Math.floor((this.width - tetrimino.blocks.length) / 2),
+      0,
+    ]);
   }
 
   isEmpty(x, y) {
@@ -217,7 +225,7 @@ export default class Game {
   shiftQueue() {
     const queue = this.queue.slice();
 
-    queue.push(this.createRandomTetrimino());
+    queue.push(this.initRandomTetrimino());
     return new Game({ ...this, queue, tetrimino: queue.shift() });
   }
 }
