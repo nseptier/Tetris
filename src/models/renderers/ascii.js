@@ -1,9 +1,20 @@
 import State from 'enums/state';
 
 const UNIT = 25;
+const tetriminoSize = {
+  i: [4, 1],
+  j: [3, 2],
+  l: [3, 2],
+  o: [2, 2],
+  s: [3, 2],
+  t: [3, 2],
+  z: [3, 2],
+};
 
 const initCanvas = (id, { height, width }) => {
-  const canvas = document.getElementById(id);
+  const canvas = id
+    ? document.getElementById(id)
+    : document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
   canvas.height = UNIT * height;
@@ -14,9 +25,19 @@ const initCanvas = (id, { height, width }) => {
   return [ctx, canvas];
 };
 
-export default (width, height) => {
+export default ({ height, queueSize, width }) => {
   const [gameBoardCtx] = initCanvas('gameBoard', { height, width });
   const [textCtx, textCanvas] = initCanvas('text', { height, width });
+  const queueCanvas = [];
+  const queueCtx = [];
+
+  [...new Array(queueSize)].forEach((tetrimino, i) => {
+    const [ctx, canvas] = initCanvas(null, { height: 4, width: 4 });
+
+    queueCanvas[i] = canvas;
+    queueCtx[i] = ctx;
+    document.getElementById('queue').appendChild(canvas);
+  });
 
   const displayText = text => {
     let x = width * UNIT / 2 - textCtx.measureText(text).width / 2;
@@ -81,6 +102,35 @@ export default (width, height) => {
     }
   };
 
+  const renderQueue = queue => {
+    queue.forEach((tetrimino, i) => {
+      queueCanvas[i].width = UNIT * tetriminoSize[tetrimino.shape][0];
+      queueCanvas[i].height = UNIT * tetriminoSize[tetrimino.shape][1];
+      queueCtx[i].clearRect(
+        0,
+        0,
+        tetriminoSize[tetrimino.shape][0] * UNIT,
+        tetriminoSize[tetrimino.shape][1] * UNIT,
+      );
+      queueCtx[i].font = '20px "source code pro"';
+      queueCtx[i].fillStyle = 'white';
+      queueCtx[i].textAlign = 'center';
+      queueCtx[i].textBaseline = 'middle';
+
+      for (let y = 0; y < tetriminoSize[tetrimino.shape][1]; y++) {
+        for (let x = 0; x < tetriminoSize[tetrimino.shape][0]; x++) {
+          if (!tetrimino.blocks[y][x] && tetrimino.shape !== 'i') continue;
+
+          queueCtx[i].fillText(
+            tetrimino.blocks[y][x] || 1,
+            x * UNIT + UNIT / 2,
+            y * UNIT + UNIT / 2,
+          );
+        }
+      }
+    });
+  };
+
   const renderTetrimino = tetrimino => {
     for (let y = 0; y < tetrimino.blocks.length; y++) {
       for (let x = 0; x < tetrimino.blocks[y].length; x++) {
@@ -104,14 +154,15 @@ export default (width, height) => {
 
   return {
     render({ game, name: state }) {
-      const { fullRowsIndexes, ghost, lockedBlocks, tetrimino } = game;
+      const { fullRowsIndexes, ghost, lockedBlocks, queue, tetrimino } = game;
 
       renderLockedBlocks({ fullRowsIndexes, lockedBlocks });
-
       if (tetrimino) {
         renderGhost(ghost);
         renderTetrimino(tetrimino);
       }
+
+      renderQueue(queue);
 
       switch (state) {
       case State.NEW_GAME: displayText('Press [Enter]'); break;
