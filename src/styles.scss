@@ -9,11 +9,7 @@ body {
 
 #gameBoard,
 #text {
-  --height: 500px;
-
   border: 0;
-  height: var(--height);
-  width: calc(var(--height) / 2);
 }
 
 #text {

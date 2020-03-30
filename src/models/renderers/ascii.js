@@ -1,6 +1,6 @@
 import State from 'enums/state';
 
-const UNIT = 50;
+const UNIT = 25;
 
 const initCanvas = (id, { height, width }) => {
   const canvas = document.getElementById(id);
