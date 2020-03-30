@@ -37,7 +37,7 @@ export default class Game {
     this.width = lockedBlocks ? lockedBlocks[0].length : width;
     this.lockedBlocks = lockedBlocks
       || [...new Array(height)].map(() => [...new Array(width)].fill(0));
-    this.queue = queue ?? this.initQueue(queueSize);
+    this.queue = queue ?? [...Array(queueSize)].map(createRandomTetrimino);
     this.tetrimino = tetrimino;
   }
 
@@ -128,19 +128,6 @@ export default class Game {
     return new Game({ ...this, tetrimino: this.ghost });
   }
 
-  initQueue(size) {
-    return [...Array(size)].map(() => this.initRandomTetrimino());
-  }
-
-  initRandomTetrimino() {
-    const tetrimino = createRandomTetrimino();
-
-    return tetrimino.moveTo([
-      Math.floor((this.width - tetrimino.blocks.length) / 2),
-      0,
-    ]);
-  }
-
   isEmpty(x, y) {
     return this.lockedBlocks[y] && !this.lockedBlocks[y][x];
   }
@@ -225,7 +212,13 @@ export default class Game {
   shiftQueue() {
     const queue = this.queue.slice();
 
-    queue.push(this.initRandomTetrimino());
-    return new Game({ ...this, queue, tetrimino: queue.shift() });
+    queue.push(createRandomTetrimino());
+
+    let tetrimino = queue.shift();
+    tetrimino = tetrimino.moveTo([
+      Math.floor((this.width - tetrimino.blocks.length) / 2),
+      0,
+    ]);
+    return new Game({ ...this, queue, tetrimino });
   }
 }
