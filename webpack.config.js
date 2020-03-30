@@ -37,10 +37,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      meta: {
-        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
-      },
-      title: 'Tetris',
+      template: 'src/index.html',
     }),
     new MiniCssExtractPlugin({ filename: 'styles.css' }),
   ],

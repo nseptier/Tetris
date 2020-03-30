@@ -268,7 +268,7 @@
     "switch-colon-spacing": "error", // enforce spacing around colons of switch statements
     "template-tag-spacing": "error", // require or disallow spacing between template tags and their literals
     "unicode-bom": "error", // require or disallow Unicode byte order mark (BOM)
-    "wrap-regex": "error", // require parenthesis around regex literals
+    "wrap-regex": "off", // require parenthesis around regex literals
     /* ECMAScript 6
        These rules relate to ES6, also known as ES"error"015: */
     "arrow-body-style": "error", // require braces around arrow function bodies

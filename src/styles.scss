@@ -7,19 +7,32 @@ body {
   min-height: 100vh;
 }
 
-canvas {
-  --height: max(50vh, 400px);
+#gameBoard,
+#text {
+  --height: 500px;
 
   border: 0;
   height: var(--height);
   width: calc(var(--height) / 2);
 }
 
-@media (max-width: 480px) {
-  canvas {
-    --height: 90vh;
+#text {
+  bottom: 0;
+  display: none;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 
-    height: var(--height);
-    width: calc(var(--height) / 2);
-  }
+#text.--visible {
+  display: block;
+}
+
+#text.--visible + #gameBoard {
+  opacity: .5;
+}
+
+.wrapper {
+  position: relative;
 }
