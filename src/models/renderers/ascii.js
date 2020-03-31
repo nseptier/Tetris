@@ -59,6 +59,10 @@ export default ({ height, queueSize, width }) => {
     textCanvas.classList.remove('--visible');
   };
 
+  const renderBlock = (type, x, y, ctx = gameBoardCtx) => {
+    ctx.fillText(type, x + UNIT / 2, y + UNIT / 2);
+  };
+
   const renderLockedBlocks = ({ fullRowsIndexes, lockedBlocks }) => {
     gameBoardCtx.clearRect(0, 0, width * UNIT, height * UNIT);
     for (let y = 0; y < lockedBlocks.length; y++) {
@@ -70,11 +74,7 @@ export default ({ height, queueSize, width }) => {
             ? '#fff'
             : 'rgba(255, 255, 255, .05)';
         }
-        gameBoardCtx.fillText(
-          lockedBlocks[y][x],
-          x * UNIT + UNIT / 2,
-          y * UNIT + UNIT / 2,
-        );
+        renderBlock(lockedBlocks[y][x], x * UNIT, y * UNIT);
       }
     }
   };
@@ -93,10 +93,10 @@ export default ({ height, queueSize, width }) => {
           UNIT,
         );
         gameBoardCtx.fillStyle = 'rgba(255, 255, 255, .25)';
-        gameBoardCtx.fillText(
+        renderBlock(
           ghost.blocks[y][x],
-          ghost.x * UNIT + x * UNIT + UNIT / 2,
-          ghost.y * UNIT + y * UNIT + UNIT / 2,
+          (ghost.x + x) * UNIT,
+          (ghost.y + y) * UNIT,
         );
       }
     }
@@ -121,10 +121,11 @@ export default ({ height, queueSize, width }) => {
         for (let x = 0; x < tetriminoSize[tetrimino.shape][0]; x++) {
           if (!tetrimino.blocks[y][x] && tetrimino.shape !== 'i') continue;
 
-          queueCtx[i].fillText(
+          renderBlock(
             tetrimino.blocks[y][x] || 1,
-            x * UNIT + UNIT / 2,
-            y * UNIT + UNIT / 2,
+            x * UNIT,
+            y * UNIT,
+            queueCtx[i],
           );
         }
       }
@@ -143,10 +144,10 @@ export default ({ height, queueSize, width }) => {
           UNIT,
         );
         gameBoardCtx.fillStyle = '#C2185B';
-        gameBoardCtx.fillText(
+        renderBlock(
           tetrimino.blocks[y][x],
-          (tetrimino.x + x) * UNIT + UNIT / 2,
-          (tetrimino.y + y) * UNIT + UNIT / 2,
+          (tetrimino.x + x) * UNIT,
+          (tetrimino.y + y) * UNIT,
         );
       }
     }
