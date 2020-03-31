@@ -1,6 +1,6 @@
 body {
   align-items: center;
-  background: #111;
+  background: #313233;
   display: flex;
   font-family: 'source code pro';
   font-size: 20px;
@@ -10,21 +10,27 @@ body {
 }
 
 #gameBoard,
+#queue,
 #text {
-  border: 0;
+  border-radius: 2px;
+  padding: 4px;
 }
 
 #gameBoard {
-  border: 1px solid rgba(255, 255, 255, .1);
+  background: #b7c58e;
+  border-radius: 2px;
+  border: 1px solid black;
 }
 
 #text {
+  border: 0;
   bottom: 0;
   display: none;
   left: 0;
   position: absolute;
   right: 0;
   top: 0;
+  z-index: 1;
 }
 
 #text.--visible {
@@ -32,13 +38,14 @@ body {
 }
 
 #text.--visible + #gameBoard {
-  opacity: .5;
+  // opacity: .5;
 }
 
 #queue {
   align-self: flex-start;
+  background: #b7c58e;
   display: grid;
-  grid-gap: 24px;
+  grid-gap: 12px;
   left: 100%;;
   margin-left: 12px;
   position: absolute;

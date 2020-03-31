@@ -45,9 +45,10 @@ const ENCODED_BLOCKS = [
   ['063', '264', '630', '132'],
 ];
 
-const BLOCKS = ENCODED_BLOCKS.map((encodedBlocks, index) => (
+const BLOCKS = ENCODED_BLOCKS.map(encodedBlocks => (
   encodedBlocks.map(encodedBlock => {
     const blocks = [];
+    let i = 1;
     let row;
 
     for (let y = 0; y < encodedBlock.length; y++) {
@@ -56,7 +57,7 @@ const BLOCKS = ENCODED_BLOCKS.map((encodedBlocks, index) => (
         & (Math.pow(2, encodedBlock.length) - 1);
       blocks[y] = [];
       for (let x = 0; x < encodedBlock.length; x++) {
-        blocks[y][x] = row & Math.pow(2, x) ? index + 1 : 0;
+        blocks[y][x] = row & Math.pow(2, x) ? i++ : null;
       }
       /* eslint-enable no-bitwise */
     }
@@ -67,14 +68,10 @@ const BLOCKS = ENCODED_BLOCKS.map((encodedBlocks, index) => (
 export const SHAPES = 'ijlostz'.split('');
 
 export default class Tetrimino extends Chunk {
-  constructor({ rotation = 0, shape, x, y }) {
-    super({ blocks: BLOCKS[SHAPES.indexOf(shape)][rotation], x, y });
+  constructor({ id, rotation = 0, shape, x, y }) {
+    super({ blocks: BLOCKS[SHAPES.indexOf(shape)][rotation], id, x, y });
     this.rotation = rotation;
     this.shape = shape;
-  }
-
-  move([dx, dy]) {
-    return new Tetrimino({ ...this, x: this.x + dx, y: this.y + dy });
   }
 
   moveTo([x, y]) {

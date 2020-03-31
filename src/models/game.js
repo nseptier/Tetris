@@ -17,6 +17,9 @@ const JLSTZ_WALL_KICKS_TABLE = [
   [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
 ];
 
+const byId = Symbol('byId');
+const currentId = Symbol('currentId');
+
 const createRandomTetrimino = () => new Tetrimino({
   shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
 });
@@ -30,20 +33,38 @@ export default class Game {
     queueSize = 3,
     tetrimino,
     width = 10,
+    ...args
   } = {}) {
     this.fullRowsIndexes = fullRowsIndexes;
     this.gravity = 1 / 40; // cells per frame at 60 fps (cells per second)
     this.height = lockedBlocks ? lockedBlocks.length : height;
     this.width = lockedBlocks ? lockedBlocks[0].length : width;
     this.lockedBlocks = lockedBlocks
-      || [...new Array(height)].map(() => [...new Array(width)].fill(0));
+      || [...new Array(height)].map(() => [...new Array(width)]);
     this.queue = queue ?? [...Array(queueSize)].map(createRandomTetrimino);
-    this.tetrimino = tetrimino;
+
+    this[byId] = tetrimino
+      ? { ...args[byId], [tetrimino.id]: tetrimino }
+      : args[byId] ?? {};
+    this[currentId] = tetrimino?.id;
   }
 
   get ghost() {
     if (!this.tetrimino) return null;
     return this.hardDropChunk(this.tetrimino);
+  }
+
+  get tetrimino() {
+    return this.tetriminoes.byId[this.tetriminoes.currentId];
+  }
+
+  get tetriminoes() {
+    return { byId: this[byId], currentId: this[currentId] };
+  }
+
+  set tetrimino(tetrimino) {
+    this[currentId] = tetrimino.id;
+    this[byId] = { ...this[byId], [tetrimino.id]: tetrimino };
   }
 
   dropLockedBlocks() {
@@ -68,7 +89,7 @@ export default class Game {
     return new Game({
       ...this,
       lockedBlocks: lockedBlocks.map((row, index) => (
-        this.fullRowsIndexes.includes(index) ? Array(this.width).fill(0) : row
+        this.fullRowsIndexes.includes(index) ? [...Array(this.width)] : row
       )),
     });
   }
@@ -108,7 +129,7 @@ export default class Game {
 
       coordinates.forEach(([x, y]) => {
         blocks[y - yMin][x - xMin] = this.lockedBlocks[y][x];
-        this.lockedBlocks[y][x] = 0; // @todo: do not mutate lockedBlocks
+        delete this.lockedBlocks[y][x]; // @todo: do not mutate lockedBlocks
       });
       return new Chunk({ blocks, x: xMin, y: yMin });
     });
@@ -146,19 +167,21 @@ export default class Game {
     ));
   }
 
-  lockChunk(chunk) {
+  lockChunk(chunk, willForce) {
     const lockedBlocks = this.lockedBlocks.slice();
 
     chunk.blocks.forEach((row, y) => row.forEach((block, x) => {
       if (!block) return;
-      lockedBlocks[chunk.y + y][chunk.x + x] = block;
+      lockedBlocks[chunk.y + y][chunk.x + x] = willForce
+        ? { order: block, tetriminoId: chunk.id }
+        : chunk.blocks[y][x];
     }));
     return new Game({ ...this, lockedBlocks });
   }
 
   lockTetrimino() {
     return new Game({
-      ...this.lockChunk(this.tetrimino),
+      ...this.lockChunk(this.tetrimino, true),
       tetrimino: null,
     });
   }
