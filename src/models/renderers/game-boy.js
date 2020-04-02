@@ -39,9 +39,9 @@ document.documentElement.style.setProperty('--color-3', colors[3]);
 
 export default ({ height, width }) => {
   const [gameBoardCtx] = initCanvas('gameBoard', { height, width });
-  const [textCtx, textCanvas] = initCanvas('text', { height, width });
   const queueCanvas = [];
   const queueCtx = [];
+  const textNode = document.getElementById('text');
 
   [...new Array(1)].forEach((tetrimino, i) => {
     const [ctx, canvas] = initCanvas(null, { height: 4, width: 4 });
@@ -51,24 +51,8 @@ export default ({ height, width }) => {
     document.getElementById('queue').appendChild(canvas);
   });
 
-  const displayText = text => {
-    let x = width * UNIT / 2 - textCtx.measureText(text).width / 2;
-    const y = height * UNIT / 2;
-
-    textCanvas.classList.add('--visible');
-    textCtx.textAlign = 'left';
-    textCtx.clearRect(0, 0, width * UNIT, height * UNIT);
-    for (let i = 0; i < text.length; i++) {
-      const c = text.charAt(i);
-
-      textCtx.fillStyle = /[[\]]/.test(c) ? '#C2185B' : 'black';
-      textCtx.fillText(c, x, y);
-      x += textCtx.measureText(c).width;
-    }
-  };
-
   const hideText = () => {
-    textCanvas.classList.remove('--visible');
+    textNode.classList.remove('--visible');
   };
 
   const renderIBlock = (x, y, ctx, tetrimino, order) => {
@@ -440,6 +424,11 @@ export default ({ height, width }) => {
     }
   };
 
+  const showText = text => {
+    textNode.innerHTML = text;
+    textNode.classList.add('--visible');
+  };
+
   return {
     render({ game, name: state, startedAt, timestamp }) {
       const {
@@ -465,8 +454,8 @@ export default ({ height, width }) => {
       }
 
       switch (state) {
-      case State.NEW_GAME: displayText('Press [Enter]'); break;
-      case State.PAUSED: displayText('Paused'); break;
+      case State.NEW_GAME: showText('Press [Enter]'); break;
+      case State.PAUSED: showText('Paused'); break;
       default: hideText();
       }
     },
