@@ -5,7 +5,8 @@ const BLOCK_PIXELS = 8;
 const UNIT = 24;
 const PIXEL = UNIT / BLOCK_PIXELS;
 
-const colors = ['#414141', '#6b7353', '#8b956d', '#c4cfa1'];
+// const colors = ['#414141', '#6b7353', '#8b956d', '#c4cfa1'];
+const colors = ['#272718', '#686850', '#a0a086', '#c7c7a7'];
 
 const tetriminoSize = {
   i: [4, 1],
