@@ -31,13 +31,13 @@ const initCanvas = (id, { height, width }) => {
   return [ctx, canvas];
 };
 
-export default ({ height, queueSize, width }) => {
+export default ({ height, width }) => {
   const [gameBoardCtx] = initCanvas('gameBoard', { height, width });
   const [textCtx, textCanvas] = initCanvas('text', { height, width });
   const queueCanvas = [];
   const queueCtx = [];
 
-  [...new Array(queueSize)].forEach((tetrimino, i) => {
+  [...new Array(1)].forEach((tetrimino, i) => {
     const [ctx, canvas] = initCanvas(null, { height: 4, width: 4 });
 
     queueCanvas[i] = canvas;
@@ -380,19 +380,21 @@ export default ({ height, queueSize, width }) => {
   };
 
   const renderQueue = queue => {
-    queue.forEach((tetrimino, i) => {
+    queueCtx.forEach((ctx, i) => {
+      const tetrimino = queue[i];
+
       queueCanvas[i].width = UNIT * tetriminoSize[tetrimino.shape][0];
       queueCanvas[i].height = UNIT * tetriminoSize[tetrimino.shape][1];
-      queueCtx[i].clearRect(
+      ctx.clearRect(
         0,
         0,
         tetriminoSize[tetrimino.shape][0] * UNIT,
         tetriminoSize[tetrimino.shape][1] * UNIT,
       );
-      queueCtx[i].font = '20px "source code pro"';
-      queueCtx[i].fillStyle = 'white';
-      queueCtx[i].textAlign = 'center';
-      queueCtx[i].textBaseline = 'middle';
+      ctx.font = '20px "source code pro"';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
 
       for (let y = 0; y < tetriminoSize[tetrimino.shape][1]; y++) {
         for (let x = 0; x < tetriminoSize[tetrimino.shape][0]; x++) {
@@ -403,7 +405,7 @@ export default ({ height, queueSize, width }) => {
             y,
             tetrimino,
             tetrimino.blocks[y][x] || x + 1,
-            queueCtx[i],
+            ctx,
           );
         }
       }
