@@ -41,7 +41,7 @@ export default class Game {
     this.width = lockedBlocks ? lockedBlocks[0].length : width;
     this.lockedBlocks = lockedBlocks
       || [...new Array(height)].map(() => [...new Array(width)]);
-    this.queue = queue ?? [...Array(queueSize)].map(createRandomTetrimino);
+    this.queue = queue ?? [...new Array(queueSize)].map(createRandomTetrimino);
 
     this[byId] = tetrimino
       ? { ...args[byId], [tetrimino.id]: tetrimino }
@@ -89,7 +89,7 @@ export default class Game {
     return new Game({
       ...this,
       lockedBlocks: lockedBlocks.map((row, index) => (
-        this.fullRowsIndexes.includes(index) ? [...Array(this.width)] : row
+        this.fullRowsIndexes.includes(index) ? [...new Array(this.width)] : row
       )),
     });
   }
@@ -124,12 +124,12 @@ export default class Game {
       const xMin = Math.min(...coordinates.map(([x]) => x));
       const yMax = Math.max(...coordinates.map(([, y]) => y));
       const yMin = Math.min(...coordinates.map(([, y]) => y));
-      const blocks = [...Array(yMax - yMin + 1)]
-        .map(() => Array(xMax - xMin + 1).fill(0));
+      const blocks = [...new Array(yMax - yMin + 1)]
+        .map(() => [...new Array(xMax - xMin + 1)]);
 
       coordinates.forEach(([x, y]) => {
         blocks[y - yMin][x - xMin] = this.lockedBlocks[y][x];
-        delete this.lockedBlocks[y][x]; // @todo: do not mutate lockedBlocks
+        this.lockedBlocks[y][x] = null; // @todo: do not mutate lockedBlocks
       });
       return new Chunk({ blocks, x: xMin, y: yMin });
     });
