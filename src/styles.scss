@@ -1,6 +1,6 @@
 body {
   align-items: center;
-  background: #313233;
+  background: var(--color-0);
   display: flex;
   font-family: 'source code pro';
   font-size: 20px;
@@ -16,8 +16,12 @@ body {
   padding: 4px;
 }
 
+#gameBoard,
+#queue {
+  background: var(--color-3);
+}
+
 #gameBoard {
-  background: #b7c58e;
   border-radius: 2px;
   border: 1px solid black;
 }
@@ -43,7 +47,6 @@ body {
 
 #queue {
   align-self: flex-start;
-  background: #b7c58e;
   display: grid;
   grid-gap: 12px;
   left: 100%;;

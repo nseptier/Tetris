@@ -5,7 +5,7 @@ const BLOCK_PIXELS = 8;
 const UNIT = 24;
 const PIXEL = UNIT / BLOCK_PIXELS;
 
-const colors = ['#313233', '#586040', '#738459', '#b7c58e'];
+const colors = ['#414141', '#6b7353', '#8b956d', '#c4cfa1'];
 
 const tetriminoSize = {
   i: [4, 1],
@@ -30,6 +30,11 @@ const initCanvas = (id, { height, width }) => {
   ctx.textBaseline = 'middle';
   return [ctx, canvas];
 };
+
+document.documentElement.style.setProperty('--color-0', colors[0]);
+document.documentElement.style.setProperty('--color-1', colors[1]);
+document.documentElement.style.setProperty('--color-2', colors[2]);
+document.documentElement.style.setProperty('--color-3', colors[3]);
 
 export default ({ height, width }) => {
   const [gameBoardCtx] = initCanvas('gameBoard', { height, width });
