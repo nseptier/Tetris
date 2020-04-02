@@ -1,11 +1,11 @@
 import GravityState from 'models/states/gravity';
 
-const CLEAR_DURATION = 500;
+const CLEAR_DURATION = 1400;
 
 export default class RowsClearingState {
-  constructor({ game, startsAt = 0 }) {
+  constructor({ game, startedAt = 0 }) {
     this.game = game;
-    this.startsAt = startsAt;
+    this.startedAt = startedAt;
   }
 
   processInput() {
@@ -17,11 +17,13 @@ export default class RowsClearingState {
 
     game = game.markFullRows();
     if (game.fullRowsIndexes.length) {
-      if (!this.startsAt) {
-        this.startsAt = timestamp;
+      if (!this.startedAt) {
+        this.startedAt = timestamp;
         return new RowsClearingState({ ...this, game });
       }
-      if (timestamp < this.startsAt + CLEAR_DURATION) return this;
+      if (timestamp < this.startedAt + CLEAR_DURATION) {
+        return new RowsClearingState({ ...this, game });
+      }
       game = game.emptyFullRows().dropLockedBlocks();
       return new RowsClearingState({ game });
     }

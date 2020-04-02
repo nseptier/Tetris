@@ -31,7 +31,6 @@ export default class GravityState {
     const { game } = this;
 
     return new RowsClearingState({
-      ...this,
       game: game.hardDropTetrimino().lockTetrimino(),
     });
   }
@@ -119,7 +118,6 @@ export default class GravityState {
       });
     } else if (timestamp > this.lockExpiry || !this.movesLeft) {
       return new RowsClearingState({
-        ...this,
         game: game.lockTetrimino(),
       });
     }

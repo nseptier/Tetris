@@ -1,5 +1,6 @@
 import State from 'enums/state';
 
+const BLINK_DURATION = 200;
 const BLOCK_PIXELS = 8;
 const UNIT = 24;
 const PIXEL = UNIT / BLOCK_PIXELS;
@@ -305,7 +306,7 @@ export default ({ height, queueSize, width }) => {
     );
   };
 
-  const renderBlock = (tetrimino, order, x, y, ctx = gameBoardCtx) => {
+  const renderBlock = (x, y, tetrimino, order, ctx = gameBoardCtx) => {
     switch (tetrimino?.shape) {
     case 'i': renderIBlock(x, y, ctx, tetrimino, order); break;
     case 'j': renderJBlock(x, y, ctx, tetrimino, order); break;
@@ -323,26 +324,27 @@ export default ({ height, queueSize, width }) => {
   const renderLockedBlocks = ({
     fullRowsIndexes,
     lockedBlocks,
+    startedAt,
     tetriminoes,
+    timestamp,
   }) => {
     gameBoardCtx.clearRect(0, 0, width * UNIT, height * UNIT);
     for (let y = 0; y < lockedBlocks.length; y++) {
       for (let x = 0; x < lockedBlocks[y].length; x++) {
         if (!lockedBlocks[y][x]) continue;
 
-        if (fullRowsIndexes.includes(y)) {
-          gameBoardCtx.fillStyle = '#C2185B';
+        if (fullRowsIndexes.includes(y)
+          && Math.floor((timestamp - startedAt) / BLINK_DURATION) % 2) {
+          gameBoardCtx.fillStyle = colors[2];
+          gameBoardCtx.fillRect(x * UNIT, y * UNIT, UNIT, UNIT);
         } else {
-          gameBoardCtx.fillStyle = lockedBlocks[y][x]
-            ? '#fff'
-            : 'rgba(255, 255, 255, .05)';
+          renderBlock(
+            x,
+            y,
+            tetriminoes.byId[lockedBlocks[y][x].tetriminoId],
+            lockedBlocks[y][x].order,
+          );
         }
-        renderBlock(
-          tetriminoes.byId[lockedBlocks[y][x].tetriminoId],
-          lockedBlocks[y][x].order,
-          x,
-          y,
-        );
       }
     }
   };
@@ -397,10 +399,10 @@ export default ({ height, queueSize, width }) => {
           if (!tetrimino.blocks[y][x] && tetrimino.shape !== 'i') continue;
 
           renderBlock(
-            tetrimino,
-            tetrimino.blocks[y][x] || x + 1,
             x,
             y,
+            tetrimino,
+            tetrimino.blocks[y][x] || x + 1,
             queueCtx[i],
           );
         }
@@ -421,17 +423,17 @@ export default ({ height, queueSize, width }) => {
         );
         gameBoardCtx.fillStyle = '#C2185B';
         renderBlock(
-          tetrimino,
-          tetrimino.blocks[y][x],
           tetrimino.x + x,
           tetrimino.y + y,
+          tetrimino,
+          tetrimino.blocks[y][x],
         );
       }
     }
   };
 
   return {
-    render({ game, name: state }) {
+    render({ game, name: state, startedAt, timestamp }) {
       const {
         fullRowsIndexes,
         ghost,
@@ -441,13 +443,18 @@ export default ({ height, queueSize, width }) => {
         tetriminoes,
       } = game;
 
-      renderLockedBlocks({ fullRowsIndexes, lockedBlocks, tetriminoes });
+      renderQueue(queue);
+      renderLockedBlocks({
+        fullRowsIndexes,
+        lockedBlocks,
+        startedAt,
+        tetriminoes,
+        timestamp,
+      });
       if (tetrimino) {
         renderGhost(ghost);
         renderTetrimino(tetrimino);
       }
-
-      renderQueue(queue);
 
       switch (state) {
       case State.NEW_GAME: displayText('Press [Enter]'); break;
