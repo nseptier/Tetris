@@ -17,7 +17,7 @@ const JLSTZ_WALL_KICKS_TABLE = [
   [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
 ];
 
-const LINE_CLEARS_BY_LEVEL = 10;
+const LINE_CLEARS = [0, 1, 3, 5, 8];
 
 const byId = Symbol('byId');
 const currentId = Symbol('currentId');
@@ -91,8 +91,8 @@ export default class Game {
   }
 
   clearLines() {
-    this.lineClears += this.fullLinesIndexes.length;
-    if (this.lineClears >= (this.level + 1) * LINE_CLEARS_BY_LEVEL) {
+    this.lineClears += LINE_CLEARS[this.fullLinesIndexes.length];
+    if (this.lineClears >= (this.level + 1) * 5) {
       this.level += 1;
     }
 
