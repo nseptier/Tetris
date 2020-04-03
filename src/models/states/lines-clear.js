@@ -2,7 +2,7 @@ import GravityState from 'models/states/gravity';
 
 const CLEAR_DURATION = 1400;
 
-export default class RowsClearingState {
+export default class LinesClearState {
   constructor({ game, startedAt = 0 }) {
     this.game = game;
     this.startedAt = startedAt;
@@ -15,17 +15,17 @@ export default class RowsClearingState {
   update(timestamp) {
     let { game } = this;
 
-    game = game.markFullRows();
-    if (game.fullRowsIndexes.length) {
+    game = game.markFullLines();
+    if (game.fullLinesIndexes.length) {
       if (!this.startedAt) {
         this.startedAt = timestamp;
-        return new RowsClearingState({ ...this, game });
+        return new LinesClearState({ ...this, game });
       }
       if (timestamp < this.startedAt + CLEAR_DURATION) {
-        return new RowsClearingState({ ...this, game });
+        return new LinesClearState({ ...this, game });
       }
-      game = game.emptyFullRows().dropLockedBlocks();
-      return new RowsClearingState({ game });
+      game = game.clearLines();
+      return new LinesClearState({ game });
     }
     return new GravityState({ ...this, game });
   }

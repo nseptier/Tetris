@@ -17,6 +17,8 @@ const JLSTZ_WALL_KICKS_TABLE = [
   [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
 ];
 
+const LINE_CLEARS_BY_LEVEL = 10;
+
 const byId = Symbol('byId');
 const currentId = Symbol('currentId');
 
@@ -26,9 +28,10 @@ const createRandomTetrimino = () => new Tetrimino({
 
 export default class Game {
   constructor({
-    fullRowsIndexes = [],
+    fullLinesIndexes = [],
     height = 20,
     level = 0,
+    lineClears = 0,
     queue,
     queueSize = 3,
     stack,
@@ -36,9 +39,10 @@ export default class Game {
     width = 10,
     ...args
   } = {}) {
-    this.fullRowsIndexes = fullRowsIndexes;
+    this.fullLinesIndexes = fullLinesIndexes;
     this.height = stack ? stack.length : height;
     this.level = level;
+    this.lineClears = lineClears;
     this.width = stack ? stack[0].length : width;
     this.stack = stack
       || [...new Array(height)].map(() => [...new Array(width)]);
@@ -86,29 +90,40 @@ export default class Game {
     this[byId] = { ...this[byId], [tetrimino.id]: tetrimino };
   }
 
+  clearLines() {
+    this.lineClears += this.fullLinesIndexes.length;
+    if (this.lineClears >= (this.level + 1) * LINE_CLEARS_BY_LEVEL) {
+      this.level += 1;
+    }
+
+    return this.emptyFullLines().dropLockedBlocks();
+  }
+
   dropLockedBlocks() {
-    const fullRowsIndexes = this.fullRowsIndexes.slice();
+    const fullLinesIndexes = this.fullLinesIndexes.slice();
     let game = this;
     let end;
 
-    while ((end = fullRowsIndexes.shift())) {
-      const start = fullRowsIndexes[0] || 0;
+    while ((end = fullLinesIndexes.shift())) {
+      const start = fullLinesIndexes[0] || 0;
 
       game = game.extractChunks(start, end)
         .reverse()
         .map(game.hardDropChunk)
         .reduce((state, chunk) => state.lockChunk(chunk), game);
     }
-    return new Game({ ...game, fullRowsIndexes });
+    return new Game({ ...game, fullLinesIndexes });
   }
 
-  emptyFullRows() {
+  emptyFullLines() {
     const stack = this.stack.slice();
 
     return new Game({
       ...this,
-      stack: stack.map((row, index) => (
-        this.fullRowsIndexes.includes(index) ? [...new Array(this.width)] : row
+      stack: stack.map((line, index) => (
+        this.fullLinesIndexes.includes(index)
+          ? [...new Array(this.width)]
+          : line
       )),
     });
   }
@@ -177,8 +192,8 @@ export default class Game {
   }
 
   isValidChunk(chunk) {
-    return chunk.blocks.every((row, y) => (
-      row.every((block, x) => (
+    return chunk.blocks.every((line, y) => (
+      line.every((block, x) => (
         !chunk.blocks[y][x]
           || (this.isEmpty(chunk.x + x, chunk.y + y)
             && !this.isOutOfBounds(chunk.x + x, chunk.y + y))
@@ -189,7 +204,7 @@ export default class Game {
   lockChunk(chunk, willForce) {
     const stack = this.stack.slice();
 
-    chunk.blocks.forEach((row, y) => row.forEach((block, x) => {
+    chunk.blocks.forEach((line, y) => line.forEach((block, x) => {
       if (!block) return;
       stack[chunk.y + y][chunk.x + x] = willForce
         ? { order: block, tetriminoId: chunk.id }
@@ -205,13 +220,13 @@ export default class Game {
     });
   }
 
-  markFullRows() {
+  markFullLines() {
     return new Game({
       ...this,
-      fullRowsIndexes: this.stack
+      fullLinesIndexes: this.stack
         .reduce(
-          (fullRows, row, index) => (
-            row.every(block => block) ? fullRows.concat(index) : fullRows
+          (fullLines, line, index) => (
+            line.every(block => block) ? fullLines.concat(index) : fullLines
           ),
           [],
         )

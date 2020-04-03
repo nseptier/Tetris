@@ -1,8 +1,8 @@
 import DIRECTION from 'enums/direction';
 import key from 'enums/key';
+import LinesClearState from 'models/states/lines-clear';
 import NewGameState from 'models/states/new-game';
 import PausedState from 'models/states/paused';
-import RowsClearingState from 'models/states/rows-clearing';
 import State from 'enums/state';
 
 const FRAME_LENGTH_AT_60_FPS = 1000 / 60;
@@ -30,7 +30,7 @@ export default class GravityState {
   hardDropTetrimino() {
     const { game } = this;
 
-    return new RowsClearingState({
+    return new LinesClearState({
       game: game.hardDropTetrimino().lockTetrimino(),
     });
   }
@@ -117,7 +117,7 @@ export default class GravityState {
         movesLeft: 15,
       });
     } else if (timestamp > this.lockExpiry || !this.movesLeft) {
-      return new RowsClearingState({
+      return new LinesClearState({
         game: game.lockTetrimino(),
       });
     }

@@ -312,7 +312,7 @@ export default ({ height, width }) => {
   };
 
   const renderLockedBlocks = ({
-    fullRowsIndexes,
+    fullLinesIndexes,
     stack,
     startedAt,
     tetriminoes,
@@ -323,7 +323,7 @@ export default ({ height, width }) => {
       for (let x = 0; x < stack[y].length; x++) {
         if (!stack[y][x]) continue;
 
-        if (fullRowsIndexes.includes(y)
+        if (fullLinesIndexes.includes(y)
           && Math.floor((timestamp - startedAt) / BLINK_DURATION) % 2) {
           gameBoardCtx.fillStyle = colors[2];
           gameBoardCtx.fillRect(x * UNIT, y * UNIT, UNIT, UNIT);
@@ -432,7 +432,7 @@ export default ({ height, width }) => {
   return {
     render({ game, name: state, startedAt, timestamp }) {
       const {
-        fullRowsIndexes,
+        fullLinesIndexes,
         ghost,
         queue,
         stack,
@@ -442,7 +442,7 @@ export default ({ height, width }) => {
 
       renderQueue(queue);
       renderLockedBlocks({
-        fullRowsIndexes,
+        fullLinesIndexes,
         stack,
         startedAt,
         tetriminoes,
