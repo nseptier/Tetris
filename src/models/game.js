@@ -29,18 +29,18 @@ export default class Game {
     fullRowsIndexes = [],
     height = 20,
     level = 0,
-    lockedBlocks,
     queue,
     queueSize = 3,
+    stack,
     tetrimino,
     width = 10,
     ...args
   } = {}) {
     this.fullRowsIndexes = fullRowsIndexes;
-    this.height = lockedBlocks ? lockedBlocks.length : height;
+    this.height = stack ? stack.length : height;
     this.level = level;
-    this.width = lockedBlocks ? lockedBlocks[0].length : width;
-    this.lockedBlocks = lockedBlocks
+    this.width = stack ? stack[0].length : width;
+    this.stack = stack
       || [...new Array(height)].map(() => [...new Array(width)]);
     this.queue = queue ?? [...new Array(queueSize)].map(createRandomTetrimino);
 
@@ -103,11 +103,11 @@ export default class Game {
   }
 
   emptyFullRows() {
-    const lockedBlocks = this.lockedBlocks.slice();
+    const stack = this.stack.slice();
 
     return new Game({
       ...this,
-      lockedBlocks: lockedBlocks.map((row, index) => (
+      stack: stack.map((row, index) => (
         this.fullRowsIndexes.includes(index) ? [...new Array(this.width)] : row
       )),
     });
@@ -147,8 +147,8 @@ export default class Game {
         .map(() => [...new Array(xMax - xMin + 1)]);
 
       coordinates.forEach(([x, y]) => {
-        blocks[y - yMin][x - xMin] = this.lockedBlocks[y][x];
-        this.lockedBlocks[y][x] = null; // @todo: do not mutate lockedBlocks
+        blocks[y - yMin][x - xMin] = this.stack[y][x];
+        this.stack[y][x] = null; // @todo: do not mutate stack
       });
       return new Chunk({ blocks, x: xMin, y: yMin });
     });
@@ -169,7 +169,7 @@ export default class Game {
   }
 
   isEmpty(x, y) {
-    return this.lockedBlocks[y] && !this.lockedBlocks[y][x];
+    return this.stack[y] && !this.stack[y][x];
   }
 
   isOutOfBounds(x, y) {
@@ -187,15 +187,15 @@ export default class Game {
   }
 
   lockChunk(chunk, willForce) {
-    const lockedBlocks = this.lockedBlocks.slice();
+    const stack = this.stack.slice();
 
     chunk.blocks.forEach((row, y) => row.forEach((block, x) => {
       if (!block) return;
-      lockedBlocks[chunk.y + y][chunk.x + x] = willForce
+      stack[chunk.y + y][chunk.x + x] = willForce
         ? { order: block, tetriminoId: chunk.id }
         : chunk.blocks[y][x];
     }));
-    return new Game({ ...this, lockedBlocks });
+    return new Game({ ...this, stack });
   }
 
   lockTetrimino() {
@@ -208,7 +208,7 @@ export default class Game {
   markFullRows() {
     return new Game({
       ...this,
-      fullRowsIndexes: this.lockedBlocks
+      fullRowsIndexes: this.stack
         .reduce(
           (fullRows, row, index) => (
             row.every(block => block) ? fullRows.concat(index) : fullRows

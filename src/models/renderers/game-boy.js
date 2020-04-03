@@ -313,15 +313,15 @@ export default ({ height, width }) => {
 
   const renderLockedBlocks = ({
     fullRowsIndexes,
-    lockedBlocks,
+    stack,
     startedAt,
     tetriminoes,
     timestamp,
   }) => {
     gameBoardCtx.clearRect(0, 0, width * UNIT, height * UNIT);
-    for (let y = 0; y < lockedBlocks.length; y++) {
-      for (let x = 0; x < lockedBlocks[y].length; x++) {
-        if (!lockedBlocks[y][x]) continue;
+    for (let y = 0; y < stack.length; y++) {
+      for (let x = 0; x < stack[y].length; x++) {
+        if (!stack[y][x]) continue;
 
         if (fullRowsIndexes.includes(y)
           && Math.floor((timestamp - startedAt) / BLINK_DURATION) % 2) {
@@ -331,8 +331,8 @@ export default ({ height, width }) => {
           renderBlock(
             x,
             y,
-            tetriminoes.byId[lockedBlocks[y][x].tetriminoId],
-            lockedBlocks[y][x].order,
+            tetriminoes.byId[stack[y][x].tetriminoId],
+            stack[y][x].order,
           );
         }
       }
@@ -434,8 +434,8 @@ export default ({ height, width }) => {
       const {
         fullRowsIndexes,
         ghost,
-        lockedBlocks,
         queue,
+        stack,
         tetrimino,
         tetriminoes,
       } = game;
@@ -443,7 +443,7 @@ export default ({ height, width }) => {
       renderQueue(queue);
       renderLockedBlocks({
         fullRowsIndexes,
-        lockedBlocks,
+        stack,
         startedAt,
         tetriminoes,
         timestamp,

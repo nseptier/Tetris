@@ -63,18 +63,18 @@ export default ({ height, queueSize, width }) => {
     ctx.fillText(type, x + UNIT / 2, y + UNIT / 2);
   };
 
-  const renderLockedBlocks = ({ fullRowsIndexes, lockedBlocks }) => {
+  const renderLockedBlocks = ({ fullRowsIndexes, stack }) => {
     gameBoardCtx.clearRect(0, 0, width * UNIT, height * UNIT);
-    for (let y = 0; y < lockedBlocks.length; y++) {
-      for (let x = 0; x < lockedBlocks[y].length; x++) {
+    for (let y = 0; y < stack.length; y++) {
+      for (let x = 0; x < stack[y].length; x++) {
         if (fullRowsIndexes.includes(y)) {
           gameBoardCtx.fillStyle = '#C2185B';
         } else {
-          gameBoardCtx.fillStyle = lockedBlocks[y][x]
+          gameBoardCtx.fillStyle = stack[y][x]
             ? '#fff'
             : 'rgba(255, 255, 255, .05)';
         }
-        renderBlock(lockedBlocks[y][x], x * UNIT, y * UNIT);
+        renderBlock(stack[y][x], x * UNIT, y * UNIT);
       }
     }
   };
@@ -155,9 +155,9 @@ export default ({ height, queueSize, width }) => {
 
   return {
     render({ game, name: state }) {
-      const { fullRowsIndexes, ghost, lockedBlocks, queue, tetrimino } = game;
+      const { fullRowsIndexes, ghost, queue, stack, tetrimino } = game;
 
-      renderLockedBlocks({ fullRowsIndexes, lockedBlocks });
+      renderLockedBlocks({ fullRowsIndexes, stack });
       if (tetrimino) {
         renderGhost(ghost);
         renderTetrimino(tetrimino);
