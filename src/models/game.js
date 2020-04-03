@@ -28,6 +28,7 @@ export default class Game {
   constructor({
     fullRowsIndexes = [],
     height = 20,
+    level = 0,
     lockedBlocks,
     queue,
     queueSize = 3,
@@ -36,8 +37,8 @@ export default class Game {
     ...args
   } = {}) {
     this.fullRowsIndexes = fullRowsIndexes;
-    this.gravity = 1 / 40; // cells per frame at 60 fps (cells per second)
     this.height = lockedBlocks ? lockedBlocks.length : height;
+    this.level = level;
     this.width = lockedBlocks ? lockedBlocks[0].length : width;
     this.lockedBlocks = lockedBlocks
       || [...new Array(height)].map(() => [...new Array(width)]);
@@ -52,6 +53,24 @@ export default class Game {
   get ghost() {
     if (!this.tetrimino) return null;
     return this.hardDropChunk(this.tetrimino);
+  }
+
+  // cells per frame at 60 fps (cells per second)
+  get gravity() {
+    if (this.level === 0) return 1 / 36;
+    if (this.level === 1) return 1 / 32;
+    if (this.level === 2) return 1 / 29;
+    if (this.level === 3) return 1 / 25;
+    if (this.level === 4) return 1 / 22;
+    if (this.level === 5) return 1 / 18;
+    if (this.level === 6) return 1 / 15;
+    if (this.level === 7) return 1 / 11;
+    if (this.level === 8) return 1 / 7;
+    if (this.level === 9) return 1 / 5;
+    if (this.level <= 12) return 1 / 4;
+    if (this.level <= 15) return 1 / 3;
+    if (this.level <= 18) return 1 / 2;
+    return 1;
   }
 
   get tetrimino() {
