@@ -49,6 +49,7 @@ body {
 
 #text {
   background: var(--color-0);
+  box-shadow: 0 2px 2px 1px var(--color-2);
   color: var(--color-3);
   display: none;
   left: 50%;
@@ -62,10 +63,6 @@ body {
 
 #text.--visible {
   display: block;
-}
-
-#text.--visible + #gameBoard {
-  // opacity: .5;
 }
 
 #queue {
