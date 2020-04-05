@@ -10,7 +10,7 @@ export default class Core {
   @autobind
   loop(timestamp) {
     this.state = this.state
-      .processInput(this.inputsHandler.read())
+      .processInput(this.inputsHandler, timestamp)
       .update(timestamp);
     this.render(timestamp);
     window.requestAnimationFrame(this.loop.bind(this));

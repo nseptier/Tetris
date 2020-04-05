@@ -8,10 +8,13 @@ export default class NewGameState {
     this.name = State.NEW_GAME;
   }
 
-  processInput(input) {
-    switch (input) {
+  processInput(inputHandler) {
+    const { game } = this;
+
+    switch (inputHandler.read()) {
     case Key.ENTER:
-      return new GravityState(this);
+      inputHandler.consume();
+      return new GravityState({ game });
 
     default: return this;
     }

@@ -8,10 +8,11 @@ export default class PausedState {
     this.name = State.PAUSED;
   }
 
-  processInput(input) {
-    switch (input) {
+  processInput(inputHandler) {
+    switch (inputHandler.read()) {
     case key.ESCAPE:
     case key.F1:
+      inputHandler.consume();
       return new GravityState({
         ...this,
         lastUpdatedAt: this.timestamp,
