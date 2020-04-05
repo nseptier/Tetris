@@ -1,12 +1,25 @@
 body {
   align-items: center;
   background: var(--color-0);
+  box-sizing: border-box;
   display: flex;
-  font-family: 'source code pro';
+  flex-direction: column;
+  font-family: 'sans serif';
   font-size: 16px;
   justify-content: center;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
   margin: 0;
   min-height: 100vh;
+  padding: 32px;
+}
+
+#footer {
+  color: var(--color-1);
+  font-size: 12px;
+  margin: 16px;
+  text-align: center;
+  white-space: pre-line;
 }
 
 #gameBoard,
@@ -67,4 +80,15 @@ body {
 .wrapper {
   display: flex;
   position: relative;
+}
+
+@media (max-width: 480px) {
+  footer {
+    font-size: 12px;
+  }
+
+  #queue,
+  #text {
+    display: none !important;
+  }
 }
