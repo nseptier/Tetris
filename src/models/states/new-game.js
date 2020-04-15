@@ -14,7 +14,7 @@ export default class NewGameState {
     switch (inputHandler.read()) {
     case Key.ENTER:
       inputHandler.consume();
-      return new GravityState({ game });
+      return new GravityState({ game: game.initQueue(1) });
 
     default: return this;
     }
