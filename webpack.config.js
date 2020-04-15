@@ -16,7 +16,7 @@ module.exports = {
         use: ['babel-loader', 'eslint-loader'],
       },
       {
-        test: /\.s?css$/,
+        test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -32,9 +32,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: 'src/index.html',
-    }),
+    new HtmlWebpackPlugin({ template: 'src/index.html' }),
     new MiniCssExtractPlugin({ filename: 'styles.css' }),
   ],
   resolve: {
