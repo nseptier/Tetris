@@ -3,7 +3,7 @@ import Game from 'models/game';
 import gameBoyRenderer from 'models/renderers/game-boy';
 import InputsHandler from 'models/inputs-handler';
 import NewGameState from 'models/states/new-game';
-import './styles.scss';
+import './styles.css';
 
 const inputsHandler = new InputsHandler(document.body);
 const game = new Game();
