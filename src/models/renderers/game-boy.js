@@ -373,6 +373,7 @@ export default ({ height, width }) => {
     queueCtx.forEach((ctx, i) => {
       const tetrimino = queue[i];
 
+      if (!tetrimino) return;
       queueCanvas[i].width = UNIT * tetriminoSize[tetrimino.shape][0];
       queueCanvas[i].height = UNIT * tetriminoSize[tetrimino.shape][1];
       ctx.clearRect(

@@ -33,7 +33,6 @@ export default class Game {
     level = 0,
     lineClears = 0,
     queue,
-    queueSize = 3,
     stack,
     tetrimino,
     width = 10,
@@ -46,7 +45,7 @@ export default class Game {
     this.width = stack ? stack[0].length : width;
     this.stack = stack
       || [...new Array(height)].map(() => [...new Array(width)]);
-    this.queue = queue ?? [...new Array(queueSize)].map(createRandomTetrimino);
+    this.queue = queue || [];
 
     this[byId] = tetrimino
       ? { ...args[byId], [tetrimino.id]: tetrimino }
@@ -181,6 +180,13 @@ export default class Game {
 
   hardDropTetrimino() {
     return new Game({ ...this, tetrimino: this.ghost });
+  }
+
+  initQueue(queueSize = 3) {
+    return new Game({
+      ...this,
+      queue: [...new Array(queueSize)].map(createRandomTetrimino),
+    });
   }
 
   isEmpty(x, y) {

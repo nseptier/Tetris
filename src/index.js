@@ -7,7 +7,7 @@ import './styles.scss';
 
 const inputsHandler = new InputsHandler(document.body);
 const game = new Game();
-const renderer = gameBoyRenderer({ ...game, queueSize: game.queue.length });
+const renderer = gameBoyRenderer({ ...game });
 const state = new NewGameState({ game });
 const core = new Core({ inputsHandler, renderer, state });
 
