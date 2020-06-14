@@ -36,10 +36,10 @@ module.exports = {
     new MiniCssExtractPlugin({ filename: 'styles.css' }),
   ],
   resolve: {
-    alias: {
-      enums: path.resolve(__dirname, 'src/enums/'),
-      models: path.resolve(__dirname, 'src/models/'),
-    },
     extensions: ['.js', '.jsx'],
+    modules: [
+      path.resolve(__dirname, 'src'),
+      'node_modules',
+    ],
   },
 };
