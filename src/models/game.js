@@ -247,8 +247,8 @@ export default class Game {
     return new Game({ ...this, tetrimino: next });
   }
 
-  reset() {
-    return new Game({ height: this.height, width: this.width });
+  reset(options) {
+    return new Game({ ...options, height: this.height, width: this.width });
   }
 
   rotateTetrimino(angle) {

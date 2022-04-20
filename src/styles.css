@@ -14,6 +14,16 @@ body {
   padding: 32px;
 }
 
+#dialogBox {
+  z-index: 1;
+}
+
+#dialogBox,
+#gameBoard {
+  grid-column: 1;
+  grid-row: 1;
+}
+
 #footer {
   color: var(--color-1);
   font-size: 12px;
@@ -23,46 +33,15 @@ body {
 }
 
 #gameBoard,
-#queue,
-#text {
-  border-radius: 2px;
-}
-
-#gameBoard,
 #queue {
   background: var(--color-3);
+  border-radius: 2px;
   padding: 4px;
 }
 
 #gameBoard {
   border-radius: 2px;
   border: 1px solid black;
-}
-
-#screen {
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-#text {
-  background: var(--color-0);
-  box-shadow: 0 2px 2px 1px var(--color-2);
-  color: var(--color-3);
-  display: none;
-  left: 50%;
-  padding: 8px 16px;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-  z-index: 1;
-}
-
-#text.--visible {
-  display: block;
 }
 
 #queue {
@@ -74,7 +53,15 @@ body {
   position: absolute;
 }
 
+.grid {
+  align-items: center;
+  display: grid;
+  grid-template: auto / auto;
+  justify-items: center;
+}
+
 .wrapper {
+  align-items: center;
   display: flex;
   position: relative;
 }
@@ -84,8 +71,7 @@ body {
     font-size: 12px;
   }
 
-  #queue,
-  #text {
+  #queue {
     display: none !important;
   }
 }

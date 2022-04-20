@@ -1,7 +1,7 @@
 import DIRECTION from 'enums/direction';
-import key from 'enums/key';
+import GameOverState from 'models/states/game-over';
+import Key from 'enums/key';
 import LinesClearState from 'models/states/lines-clear';
-import NewGameState from 'models/states/new-game';
 import PausedState from 'models/states/paused';
 import State from 'enums/state';
 
@@ -69,35 +69,35 @@ export default class GravityState {
     if (!game.tetrimino) return this;
 
     switch (inputHandler.read()) {
-    case key.CTRL_LEFT:
-    case key.CTRL_RIGHT:
-    case key.Z:
+    case Key.CTRL_LEFT:
+    case Key.CTRL_RIGHT:
+    case Key.Z:
       inputHandler.consume();
       return this.rotateTetrimino(DIRECTION.COUNTERCLOCKWISE, timestamp);
 
-    case key.DOWN_ARROW:
-    case key.S:
+    case Key.DOWN_ARROW:
+    case Key.S:
       return this.moveTetrimino(DIRECTION.DOWN, timestamp);
 
-    case key.ESCAPE:
-    case key.F1:
+    case Key.ESCAPE:
+    case Key.F1:
       inputHandler.consume();
       return new PausedState(this);
 
-    case key.LEFT_ARROW:
-    case key.A:
+    case Key.LEFT_ARROW:
+    case Key.A:
       return this.delayAutoShift(DIRECTION.LEFT, timestamp);
 
-    case key.RIGHT_ARROW:
-    case key.D:
+    case Key.RIGHT_ARROW:
+    case Key.D:
       return this.delayAutoShift(DIRECTION.RIGHT, timestamp);
 
-    case key.SPACE:
+    case Key.SPACE:
       inputHandler.consume();
       return this.hardDropTetrimino();
 
-    case key.UP_ARROW:
-    case key.X:
+    case Key.UP_ARROW:
+    case Key.X:
       inputHandler.consume();
       return this.rotateTetrimino(DIRECTION.CLOCKWISE, timestamp);
 
@@ -125,7 +125,7 @@ export default class GravityState {
     if (!startedAt) state.startedAt = timestamp;
     if (!game.tetrimino) game = game.shiftQueue();
     if (!game.isValidChunk(game.tetrimino)) {
-      return new NewGameState({ game: game.reset() });
+      return new GameOverState({ game });
     }
 
     game = state.applyGravity(game, timestamp);
